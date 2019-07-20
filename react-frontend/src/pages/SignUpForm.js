@@ -30,9 +30,15 @@ class SignUpForm extends Component {
   handleSubmit(e){
     e.preventDefault();
 
-    console.log('The form was created with the following data:');
-    console.log(this.state)
-    
+    var signUp = this.state
+    axios.post('/api/sign-up', {
+        parameters:signUp
+      }).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+    });
+  }
     
 
 
