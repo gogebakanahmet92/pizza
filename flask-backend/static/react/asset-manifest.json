@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/react/css/main.ab3eccaf.chunk.css",
-    "main.js": "/static/react/js/main.ac304369.chunk.js",
-    "main.js.map": "/static/react/js/main.ac304369.chunk.js.map",
+    "main.js": "/static/react/js/main.18b24e52.chunk.js",
+    "main.js.map": "/static/react/js/main.18b24e52.chunk.js.map",
     "runtime~main.js": "/static/react/js/runtime~main.9d44af5e.js",
     "runtime~main.js.map": "/static/react/js/runtime~main.9d44af5e.js.map",
-    "js/2.54bf1c3c.chunk.js": "/static/react/js/2.54bf1c3c.chunk.js",
-    "js/2.54bf1c3c.chunk.js.map": "/static/react/js/2.54bf1c3c.chunk.js.map",
+    "js/2.021350c8.chunk.js": "/static/react/js/2.021350c8.chunk.js",
+    "js/2.021350c8.chunk.js.map": "/static/react/js/2.021350c8.chunk.js.map",
     "../../templates/index.html": "/static/react/../../templates/index.html",
     "css/main.ab3eccaf.chunk.css.map": "/static/react/css/main.ab3eccaf.chunk.css.map",
     "media/pizza.jpeg": "/static/react/media/pizza.b88f43a1.jpeg",
-    "precache-manifest.a579021e73c33b34771374666cff33c8.js": "/static/react/precache-manifest.a579021e73c33b34771374666cff33c8.js",
+    "precache-manifest.a9118227b3101db2311fef7462c5a590.js": "/static/react/precache-manifest.a9118227b3101db2311fef7462c5a590.js",
     "service-worker.js": "/static/react/service-worker.js"
   }
 }

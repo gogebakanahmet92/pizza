@@ -29,8 +29,29 @@ def sign_up():
     db.session.add(new_user)
     db.session.commit()
     print(name)
-    return jsonify({'message' : 'New user created!'})
+    if (name and password and email):
+        return jsonify({'message' : 'New user created!', 'name':name, 'email':email})
+    return ''
 
+@app.route('/api/log-in' , methods=['POST'])
+def log_in():
+    data = request.data
+    dataDict = json.loads(data)
+    name = dataDict['parameters']['name']
+    password = dataDict['parameters']['password'].encode('utf-8')
+    hash_password = bcrypt.hashpw(password, bcrypt.gensalt( 12 ))
+
+    user_id = User.query.filter_by(name=name).first().id
+    user_name = User.query.filter_by(name=name).first().name
+    user_password = User.query.filter_by(name=name).first().password
+    user_email = User.query.filter_by(name=name).first().email
+
+    if (user_name == name and bcrypt.hashpw(password, user_password) == user_password):
+        return jsonify({'message' : 'User login!', 'name':name})
+    else:
+        return jsonify({'message' : 'Username or password are incorrect!'})
+
+    return ''
 
 
 

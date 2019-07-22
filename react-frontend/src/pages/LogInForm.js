@@ -1,11 +1,11 @@
 import React , { Component } from 'react';
-import { Link} from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
+import axios from "axios";
 
 class LogInForm extends Component {
 
     constructor(){
         super();
-  
         this.state = {
           name: '',
           password: ''
@@ -24,18 +24,53 @@ class LogInForm extends Component {
           [name]: value
         });
       }
-  
+      
       handleSubmit(e){
         e.preventDefault();
-  
-        console.log('The form was submitted with the following data:');
-        console.log(this.state)
+    
+        var logIn = this.state
+        axios.post('/api/log-in', {
+            parameters:logIn
+          }).then((response) => {
+            var new_user = response.data;
+            console.log(new_user['name']);
+            if (new_user['name']){
+              this.setState(
+                {success: true,
+                  fail: false,
+                 user_name:new_user['name']
+                }
+                
+                )
+            }
+            else {
+              this.setState(
+                {fail: true,
+                  success: false,
+                }
+                
+                )
+            }
+            
+          })
       }
-
 
 
     render() {
         return (
+
+          <div className="App">
+          <div className="App__Form">
+            
+            <div className="PageSwitcher">
+              <NavLink to="/log-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">LOG IN</NavLink>
+              <NavLink exact to="/"  activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">SIGN UP</NavLink>
+            </div>
+          
+            <div className="FormTitle">
+              <NavLink  to="/log-in" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">LOG IN</NavLink> or 
+              <NavLink exact to="/" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">SIGN UP</NavLink>
+            </div>
             <div className="FormCenter">
             <form onSubmit={this.handleSubmit} className="FormFields" >
               
@@ -55,9 +90,16 @@ class LogInForm extends Component {
               <div className="FormField">
                 <button className="FormField__Button mr-20">LOG IN</button> <Link to="/" className="FormField__Link">Create an account</Link>
               </div>
+              <div>
+                {this.state.success == true ? (<div>{this.state.user_name} is  successfully logged!</div>) : ''}
+              </div>
+              <div>
+                {this.state.fail == true ? (<div>Username or password are incorrect!</div>) : ''}
+              </div>
 
             </form>
-            
+            </div>
+            </div>
           </div>
         )
     }
