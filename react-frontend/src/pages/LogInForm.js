@@ -33,8 +33,17 @@ class LogInForm extends Component {
             parameters:logIn
           }).then((response) => {
             var new_user = response.data;
-            console.log(new_user['name']);
+            console.log(response.data)
             if (new_user['name']){
+              this.props.history.push(
+                {
+                  pathname:'/home',
+                  state:{
+                    name:new_user['name'],
+                    id:8
+                  }
+                }
+              );
               this.setState(
                 {success: true,
                   fail: false,
@@ -63,12 +72,12 @@ class LogInForm extends Component {
           <div className="App__Form">
             
             <div className="PageSwitcher">
-              <NavLink to="/log-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">LOG IN</NavLink>
+              <NavLink to="/logIn" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">LOG IN</NavLink>
               <NavLink exact to="/"  activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">SIGN UP</NavLink>
             </div>
           
             <div className="FormTitle">
-              <NavLink  to="/log-in" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">LOG IN</NavLink> or 
+              <NavLink  to="/logIn" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">LOG IN</NavLink> or 
               <NavLink exact to="/" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">SIGN UP</NavLink>
             </div>
             <div className="FormCenter">
@@ -91,10 +100,7 @@ class LogInForm extends Component {
                 <button className="FormField__Button mr-20">LOG IN</button> <Link to="/" className="FormField__Link">Create an account</Link>
               </div>
               <div>
-                {this.state.success == true ? (<div>{this.state.user_name} is  successfully logged!</div>) : ''}
-              </div>
-              <div>
-                {this.state.fail == true ? (<div>Username or password are incorrect!</div>) : ''}
+                {this.state.fail === true ? (<div>Username or password are incorrect!</div>) : ''}
               </div>
 
             </form>

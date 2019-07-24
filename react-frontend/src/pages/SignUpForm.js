@@ -50,12 +50,12 @@ class SignUpForm extends Component {
           <div className="App__Form">
             
             <div className="PageSwitcher">
-              <NavLink to="/log-in" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">LOG IN</NavLink>
+              <NavLink to="/logIn" activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">LOG IN</NavLink>
               <NavLink exact to="/"  activeClassName="PageSwitcher__Item--Active" className="PageSwitcher__Item">SIGN UP</NavLink>
             </div>
           
             <div className="FormTitle">
-              <NavLink  to="/log-in" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">LOG IN</NavLink> or 
+              <NavLink  to="/logIn" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">LOG IN</NavLink> or 
               <NavLink exact to="/" activeClassName="FormTitle__Link FormTitle__Link--Active" className="FormTitle__Link">SIGN UP</NavLink>
             </div>
             <div className="FormCenter">
@@ -87,7 +87,7 @@ class SignUpForm extends Component {
                 <button className="FormField__Button mr-20">SIGN UP</button> <Link to="/log-in" className="FormField__Link">I'm already member</Link>
               </div>
               <div>
-                {this.state.success == true ? (<div>New user created succesfully!</div>) : ''}
+                {this.state.success === true ? (<div>New user created succesfully!</div>) : ''}
               </div>
             </form>
             

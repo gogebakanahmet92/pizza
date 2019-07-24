@@ -2,6 +2,7 @@
   height: 100vh;
   display: flex;
   color: white;
+  background-color: #2E4158;
 }
 
 
@@ -10,6 +11,77 @@
   background-color: #2E4158;
   padding: 25px 40px;
   overflow: auto;
+}
+
+.Seperator {
+  border: 2px solid #199087;
+}
+
+.NavBarField {
+  background-color: #2E4158;
+  width: 100%;
+  position: absolute;
+}
+
+
+
+.NavBarField__Button {
+  background-color: #52C4B9;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  padding: 15px 0px;
+  font-size: .8em;
+  font-weight: 500;
+  width: 162px;
+  margin-left: 140px;
+  margin-bottom: 15px;
+}
+
+.NavBarField__Button__Account {
+  background-color: #52C4B9;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius:25px;
+  padding: 14px 0px;
+  font-size: .8em;
+  font-weight: 500;
+  margin-top: 2%;
+  width: 170px;
+  margin-left: 1000px;
+}
+
+.TaskFormField {
+  position: absolute;
+  top:250px;
+  width: 20%;
+  margin-left: 40%;
+  margin-right: 40%;
+  border: 5px solid #199087;
+  border-radius:40px;
+}
+
+.TaskFormField__Label__First {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.TaskFormField__Label {
+  margin-left: 30px;
+}
+
+.TaskField__Button {
+  background-color: #52C4B9;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  padding: 12px 27px;
+  font-size: .8em;
+  font-weight: 500;
+  margin-left:33%;
 }
 
 .PageSwitcher {
@@ -113,6 +185,7 @@
   font-size: .8em;
   font-weight: 500;
 }
+
 
 .FormField__Link {
   color: #66707D;
