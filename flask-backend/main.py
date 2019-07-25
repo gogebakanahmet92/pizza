@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import bcrypt
 import os,binascii
+from werkzeug.utils import secure_filename
+
+import create_task
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Pass1234'
@@ -77,7 +80,7 @@ def log_in():
     
     if (user_name == name and bcrypt.hashpw(password, user_password) == user_password):
         return jsonify({'message' : 'User login!', 'name':name, 'task':task_dict})
-    else:
+    else: 
         return jsonify({'message' : 'Username or password are incorrect!'})
 
     return ''
@@ -85,9 +88,38 @@ def log_in():
 
 @app.route('/api/files' , methods=['POST'])
 def get_files(): 
+    if request.method == 'POST':     
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        #create_task.create_task_results(f.filename)
+        return jsonify({'message' : 'File Uploaded successfully!', 'status':200})
+        
+
+@app.route('/api/taskInfo' , methods=['POST'])
+def task_info(): 
     data = request.data
-    print(data)
-    return ''
+    dataDict = json.loads(data)
+    prediction_step = dataDict['sending_prediction_step']
+    task_name =  dataDict['sending_task_name']
+    current_user = dataDict['current_user']
+    current_user_id = User.query.filter_by(name=current_user).first().id
+
+    task_dict = {
+        'task_path': [],
+        'task_name' : []
+    }
+    task = Tasks.query.filter(Tasks.user_id == current_user_id).all()
+    for i in task:
+        task_dict['task_path'].append(i.task_path)
+        task_dict['task_name'].append(i.task_name)
+
+    new_task = Tasks(task_path='/', user_id=current_user_id, task_name=task_name)
+    new_task.save_to_db()
+
+    return jsonify({'message' : 'File!', 'task':task_dict})
+
+            
+
 
 
 @app.route('/home' , methods=['GET'])
