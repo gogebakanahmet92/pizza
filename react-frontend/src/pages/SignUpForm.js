@@ -84,7 +84,7 @@ class SignUpForm extends Component {
               </div>
 
               <div className="FormField">
-                <button className="FormField__Button mr-20">SIGN UP</button> <Link to="/log-in" className="FormField__Link">I'm already member</Link>
+                <button className="FormField__Button mr-20">SIGN UP</button> <Link to="/logIn" className="FormField__Link">I'm already member</Link>
               </div>
               <div>
                 {this.state.success === true ? (<div>New user created succesfully!</div>) : ''}

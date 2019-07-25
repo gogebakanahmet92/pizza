@@ -8,7 +8,8 @@ class LogInForm extends Component {
         super();
         this.state = {
           name: '',
-          password: ''
+          password: '',
+          
         };
   
         this.handleChange = this.handleChange.bind(this);
@@ -33,14 +34,13 @@ class LogInForm extends Component {
             parameters:logIn
           }).then((response) => {
             var new_user = response.data;
-            console.log(response.data)
             if (new_user['name']){
               this.props.history.push(
                 {
                   pathname:'/home',
                   state:{
                     name:new_user['name'],
-                    id:8
+                    userLoginData:response.data
                   }
                 }
               );

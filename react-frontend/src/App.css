@@ -39,6 +39,14 @@
   margin-bottom: 15px;
 }
 
+.NavBarField__Button:hover{
+  background-color:  #7ff062;
+  cursor: pointer;
+}
+.NavBarField__Button__Account:hover{
+  background-color:  #7ff062;
+  cursor: pointer;
+}
 .NavBarField__Button__Account {
   background-color: #52C4B9;
   color: white;
@@ -84,6 +92,64 @@
   margin-left:33%;
 }
 
+.TaskField__Button:hover {
+  background-color:  #7ff062;
+  cursor: pointer;
+}
+
+.UserTaskField{
+  position: absolute;
+  top:20%;
+  left:20%
+}
+
+td, th {
+  border-right: 2px solid #199087;
+  text-align: left;
+  padding: 8px;
+  width: 280px;
+}
+
+table {
+  border-collapse: collapse;
+  display: inline-block
+}
+tr {
+  border:2px solid #199087;
+}
+
+.SeeResultsField{
+  background-color:  #199087;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-left: 50px;
+    
+}
+
+.SeeResultsField:hover {
+  background-color:  #7ff062;
+  cursor: pointer;
+}
+
+.DeleteField{
+  background-color: #638ac7;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-left: 25px;
+}
+
+.DeleteField:hover{
+  background-color: red;
+  cursor: pointer;
+}
 .PageSwitcher {
   display: flex;
   justify-content: flex-end;
@@ -186,13 +252,26 @@
   font-weight: 500;
 }
 
-
+.FormField__Button:hover{
+  background-color:#7ff062;
+  cursor: pointer;
+}
 .FormField__Link {
   color: #66707D;
   text-decoration: none;
   display: inline-block;
   border-bottom: 1.5px solid #225E62;
   padding-bottom: 5px;
+}
+
+.ImageContainerField{
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 40%;
+  height: 50%;
+  border: 3px solid #199087;
+  border-radius: 20px
 }
 
 .FormField__CheckboxLabel {
@@ -213,3 +292,50 @@
   padding-bottom: 2px;
   margin-left: 5px;
 }
+
+.AccountSettingsField{
+  position: absolute;
+  top: 13%;
+  left: 85%;
+  width: 156px;
+  border: 2px solid  #199087;
+  height: 41px;
+  border-radius: 10px;
+  color:white;
+  background-color: #199087;
+}
+
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  top:100px;
+  right:130px;
+  width: 160px;
+  background-color: #199087;
+  font-weight:bold;
+  position: absolute;
+  margin-top: 4px;
+  border-radius: 20px;
+  font-size: .9em;
+
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+li a {
+  color: white;
+  text-decoration: none;
+}
+li {
+  padding: 8px 16px;
+}
+li:last-child {
+  border-bottom: none;
+}
+li:hover {
+  background-color: #7ff062;
+  color: white;
+}
+
