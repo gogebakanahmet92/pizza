@@ -9,7 +9,24 @@ from sklearn import linear_model
 import matplotlib.pyplot as plt
 import datetime
 
+def get_pizza_type(file_name):
+    data = pd.ExcelFile(file_name)
+    sheet_name = data.sheet_names
+    df = data.parse(sheet_name[0])
+    df = df.fillna(0.0)
 
+    dates_vector = df['DATE']
+    sales_vector = df['SALES']
+    pizza_vector = df['CATEGORY']
+
+    sales_data_dict = {}
+    pizza_type = []
+    for category in range(len(pizza_vector)):
+        if not pizza_vector[category] in sales_data_dict:
+            sales_data_dict[pizza_vector[category]] = [[],[]]
+        if not pizza_vector[category] in pizza_type:
+            pizza_type.append(pizza_vector[category])
+    return pizza_type
 
 def create_task_results(file_name):
     data = pd.ExcelFile(file_name)

@@ -1,7 +1,13 @@
 import React , { Component } from 'react';
 import axios from "axios";
+import LogInForm from './LogInForm';
+import NewTask from './NewTask';
+import { BrowserRouter as Route} from 'react-router-dom';
 
 export class Home extends Component {
+
+
+
   constructor(){
     super();
     
@@ -16,7 +22,15 @@ export class Home extends Component {
       image_container:false,
       accountSettings:false,
       accountSettingsValue:'',
-      displayMenu:false
+      displayMenu:false,
+      logOut:false,
+      validFile:false,
+      seeError:false,
+      pizzaTypes:'',
+      indexValue:'',
+      user:'',
+      task_names:[],
+      task_path:[]
       
     };
     this.handleChange = this.handleChange.bind(this);
@@ -28,8 +42,27 @@ export class Home extends Component {
     this.handleSettings = this.handleSettings.bind(this)
     this.showDropdownMenu = this.showDropdownMenu.bind(this);
     this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
+    this.getLogOut = this.getLogOut.bind(this);
+    this.seeResult= this.seeResult.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      user:this.props.location.state.name
+    })
+    axios.post('/api/taskInfo', {
+      current_user : this.props.location.state.name
+    }).then((response) => {
+      this.setState ({
+        final_tasks : response.data,
+        task_names:response.data.task.task_name,
+        task_path:response.data.task.task_path
+      })
+    }
+    )
+  }
+
+ 
 
   showDropdownMenu(event) {
     event.preventDefault();
@@ -61,26 +94,46 @@ export class Home extends Component {
         {newTask: true,
           home:false,
           image_container:false,
+          validFile:false
         }
         
         )
+        let path = `/newTask`;
+        this.props.history.push(
+          {
+            pathname:path,
+            state:{
+              name:this.props.location.state.name
+            }
+          }
+        );
     }
+
+    getLogOut(e){
+      let path = `/logIn`;
+      this.props.history.push(path); }
 
     seeResult(e){
       this.setState(
         {
           image_container:true,
           newTask:false,
-          home:false
+          home:false,
+          validFile:false,
+          indexValue:e.target.parentNode.parentNode.querySelectorAll("[data-index]")[0].getAttribute("data-index")
         }
         
         )
+
+        
+        
     }
 
     getAccountSetting(e){
       this.setState(
         {
-          accountSettings:true
+          accountSettings:true,
+          validFile:false
         }
         
         )
@@ -95,7 +148,8 @@ export class Home extends Component {
           predictionStep:'',
           fileInfo:'',
           home:true,
-          image_container:false
+          image_container:false,
+          validFile:false
         }
         
         )
@@ -108,10 +162,15 @@ export class Home extends Component {
   handleSubmit(e){
     e.preventDefault();
     const formData = new FormData()
-    console.log(this.state.fileInfo[0])
     var sending_task_name = this.state.taskname;
     var sending_prediction_step = this.state.predictionStep;
-    formData.append('file', this.state.fileInfo[0])
+    let name = this.state.fileInfo[0].name
+    
+    if (name.includes('.xlsx')){
+      this.setState({
+        validFile:true
+      })
+      formData.append('file', this.state.fileInfo[0])
     axios({
       method: 'post',
             url: '/api/files',
@@ -120,144 +179,134 @@ export class Home extends Component {
             }
       
   }).then(response => {
-    if(response.data.status === 200){
+    if(response.data.status === 200 && this.state.validFile === true){
       this.setState ( {
         home:true,
         newTask:false,
         taskname: '',
         predictionStep:'',
-        fileInfo:''
+        fileInfo:'',
+        validFile:false,
+        seeError:false,
+        pizzaTypes:response.data.pizza_types
+      })
+
+     
+      
+    }
+    axios.post('/api/taskInfo', {
+      sending_prediction_step:sending_prediction_step,
+      sending_task_name:sending_task_name,
+      current_user : this.props.location.state.name
+    }).then((response) => {
+      this.setState ({
+        final_tasks : response.data.task,
       })
     }
+    )
   })
 
 
 
-  axios.post('/api/taskInfo', {
-    sending_prediction_step:sending_prediction_step,
-    sending_task_name:sending_task_name,
-    current_user : this.props.location.state.name
-  }).then((response) => {
-    this.setState ({
-      final_tasks : response.data.task,
-    })
-  }
-  )
-}
+  
+
+    }
+    else{
+      this.setState({
+        validFile:true,
+        seeError:true
+
+      })
+    }
+  }    
 
   onChange(e) {
     let files=e.target.files
     this.state.fileInfo = files
-  }
-
-    render() {
-      var task = this.props.location.state.userLoginData.task
-      var task_names = task.task_name
-      var task_path = task.task_path
-      var updated_task_names = this.state.final_tasks.task_name
-      var updated_path_names = this.state.final_tasks.task_path
-      console.log(updated_path_names)
-      if (updated_path_names){
-        if (updated_path_names.length > task_names.length){
-          task_names = updated_task_names;
-          task_path = updated_path_names
-        }
-      }
+    let name = this.state.fileInfo[0].name
+    
+    if (name.includes('.xlsx')){
+      this.setState({
+        validFile:true
+      })
       
+    }
+  }
+    
+    render() {
+      
+        var task_names = this.state.task_names
+        var task_path = this.state.task_path
         return (
             <div className="App">
                 <div className="NavBarField">
                     <button  onClick={this.getHome} className="NavBarField__Button ">HOME</button>
                     <button  onClick={this.getNewTask} className="NavBarField__Button mr-20">NEW TASK</button>
                     <button  onClick={this.showDropdownMenu} className="NavBarField__Button__Account mr-20">ACCOUNT SETTINGS</button>
+                    
                     { this.state.displayMenu ? (
                       <ul>
-                    <li><a className="active" href="#Create Page">Create Page</a></li>
-                    <li><a href="#Manage Pages">Manage Pages</a></li>
-                    <li><a href="#Create Ads">Create Ads</a></li>
-                    <li><a href="#Manage Ads">Manage Ads</a></li>
-                    <li><a href="#Activity Logs">Activity Logs</a></li>
-                    <li><a href="#Setting">Setting</a></li>
-                    <li><a href="#Log Out">Log Out</a></li>
+                    <li><button>All Tasks</button></li>
+                    <li><button onClick={this.getLogOut}>Log Out</button></li>
+                    
                       </ul>
                     ):
                     (
                       null
-        )
-        }
+                        )
+                        }
                     <div className="Seperator"></div>
-                    
 
-                 
-
-
+                
                 </div>
-                   {this.state.newTask === true ? 
-                   <form onSubmit={this.handleSubmit} encType="multipart/form-data">
-                     <div className="TaskFormField">
-                    <div className="FormField TaskFormField__Label TaskFormField__Label__First">
-                            <label className="FormField__Label" htmlFor="name">Task Name</label>
-                            <input type="text" id="taskname" className="FormField__Input" placeholder="Enter your task name" name="taskname"
-                            value={this.state.taskname} onChange={this.handleChange}></input>
-                    </div>
-    
-                 <div className="FormField TaskFormField__Label">
-                    <label className="FormField__Label" htmlFor="password">Task Field</label>
-                    <input  type="file" id="file" className="FormField__Input" placeholder="Choose a file" name="file"
-                        value={this.state.file} onChange={(e) => this.onChange(e)}></input>
-                  </div>
 
-                  <div className="FormField TaskFormField__Label">
-                    <label className="FormField__Label" htmlFor="password">Prediction Step</label>
-                    <input type="text" id="predictionStep" className="FormField__Input" placeholder="Write a prediction step" name="predictionStep"
-                        value={this.state.predictionStep} onChange={this.handleChange}></input>
-                  </div>
-
-                  <div className="FormField">
-                        <button onClick={this.createNewTask} className="TaskField__Button mr-20">Create Task</button> 
-                    </div>
-                 </div>
-                   </form>
-                   : ''}
-                   {this.state.home === true ? 
+                {this.state.home === true ? 
                    <div className='UserTaskField'>
-                   <table>
-                    <tr>
-                      <th>NO</th>
-                      <th>TASK NAME</th>
-                      <th>PATH</th>
-                      <th>EDIT</th>
-                    </tr>
 
+                      <table className="table1">
+                        <tr>
+                          <th className="TableHeaders">NO</th>
+                          <th className="TableHeaders">TASK NAME</th>
+                          <th className="TableHeaders">PIZZA TYPES</th>
+                          <th className="TableHeaders">EDIT</th>
+                        </tr>
+                      <table className="table2">
                       {task_names.map((column, index) => 
                       <tr>
                         <td>{index+1}</td>
                         <td>{column}</td>
-                         <td>{task_path[index]}</td>
+                        <td data-index={index}>{task_path[index]}</td>
                          <td><button onClick={this.seeResult} className="SeeResultsField">Results</button><button className="DeleteField">Delete</button></td>
                       </tr>)}
-                      
-                
+
+                      </table>
+         
+
+
+                        </table>
                    
-                    </table>
                    </div>
                    : ''}
 
                 {this.state.image_container === true ? 
                    <div className="ImageContainerField">
+                     <div className="ImageField"></div>
+                     <div className="PizzaSelectionField">
+                     {task_path[this.state.indexValue].split(",").map((column, index) => 
+                                <button className="Results">{column.trim()}</button>)}
+                                
+                     </div>
+                     
                    </div>
+                   
+                   
+                       
+                     
+               
+             
                    : ''}
 
 
-
-
-        
-
-          
-
-       
-
-                
                 </div>
         )
     }

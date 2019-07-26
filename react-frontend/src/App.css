@@ -98,9 +98,11 @@
 }
 
 .UserTaskField{
-  position: absolute;
   top:20%;
-  left:20%
+  left:20%;
+  height: 700px;
+  margin: auto;
+  width: 70%
 }
 
 td, th {
@@ -264,11 +266,21 @@ tr {
   padding-bottom: 5px;
 }
 
-.ImageContainerField{
+.ImageField{
   position: absolute;
   top: 25%;
-  left: 30%;
+  left: 15%;
   width: 40%;
+  height: 50%;
+  border: 3px solid #199087;
+  border-radius: 20px
+}
+
+.PizzaSelectionField{
+  position: absolute;
+  top: 25%;
+  left: 65%;
+  width: 10%;
   height: 50%;
   border: 3px solid #199087;
   border-radius: 20px
@@ -324,12 +336,19 @@ ul {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-li a {
-  color: white;
-  text-decoration: none;
+li button {
+  background-color: #199087;
+    border: none;
+    color: #fff;
+    font-size: 1.1em;
+    margin-left: -1px;
+    width: 140px;
+    height: 35px;
 }
-li {
-  padding: 8px 16px;
+
+
+li button:hover {
+  background-color: #7ff062;
 }
 li:last-child {
   border-bottom: none;
@@ -339,3 +358,46 @@ li:hover {
   color: white;
 }
 
+.FileValidationField{
+  position: absolute;
+    top: 72%;
+    left: 43%;
+}
+
+.table2 {
+  overflow-y: auto;
+   height: 600px;
+   table-layout:fixed;
+   top:23%;
+   margin-top:2%
+}
+
+.table1 {
+  margin-top: 4%;
+  position: absolute;
+   top:10%
+}
+
+.Results {
+  background-color: #52C4B9;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 15px 0px;
+  font-size: .8em;
+  font-weight: 500;
+  width: 100px;
+  margin-left: 43px;
+  margin-top: 20px;
+  cursor:pointer;
+
+}
+
+.Results:last-child {
+  display: none
+}
+
+.TableHeaders{
+  background-color:  #199087;
+}

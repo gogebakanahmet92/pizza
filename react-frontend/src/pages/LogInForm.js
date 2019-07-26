@@ -39,8 +39,7 @@ class LogInForm extends Component {
                 {
                   pathname:'/home',
                   state:{
-                    name:new_user['name'],
-                    userLoginData:response.data
+                    name:new_user['name']
                   }
                 }
               );
