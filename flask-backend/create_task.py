@@ -30,6 +30,9 @@ def get_pizza_type(file_name):
             sales_data_dict[pizza_vector[category]] = [[],[]]
         if not pizza_vector[category] in pizza_type:
             pizza_type.append(pizza_vector[category])
+
+    for i in pizza_type:
+        i.encode('utf-8')
     return pizza_type
 
 def create_task_results(file_name,user):
@@ -60,7 +63,8 @@ def create_task_results(file_name,user):
         sales_data_dict[pizza_vector[category]][0].append(ms)
         sales_data_dict[pizza_vector[category]][1].append(sales_vector[category])
 
-
+    for i in pizza_type:
+        i.encode('utf-8')
 
 
     X1 = sales_data_dict[pizza_vector[0]][0] 
@@ -99,8 +103,8 @@ def create_task_results(file_name,user):
         current_file = os.path.dirname(os.path.abspath(__file__)) + '/images/' + saving_file_name
         parent_directory = os.path.normpath(os.path.dirname(os.path.abspath(__file__)) + os.sep + os.pardir)
 
-        print(current_file)
-        plt.savefig(current_file)
+        #print(current_file)
+        #plt.savefig(current_file)
         
         if i == 0:
             copyfile(current_file, 'images/' + current_user + '.png')

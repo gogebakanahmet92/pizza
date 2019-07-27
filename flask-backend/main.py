@@ -8,8 +8,9 @@ import create_task
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Pass1234'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/ahmetgog/Desktop/huawei/git/pizza/flask-backend/pizza.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DB_URI"]
 
+                                        #'sqlite:////home/ahmetgog/Desktop/huawei/git/pizza/flask-backend/pizza.sqlite'
 db = SQLAlchemy(app)
 
 class DataStore():
@@ -136,12 +137,9 @@ def add_new_task():
     data2.current_user_id = User.query.filter_by(name=data2.current_user).first().id
 
 
-    print(data2.get_pizza_types)
     pizza_string = ''
     for i in data2.get_pizza_types:
-        pizza_string = pizza_string + i + ' , '
-            
-    print(pizza_string)
+        pizza_string = pizza_string + i + ','  
 
     new_task = Tasks(task_path=pizza_string, user_id=data2.current_user_id, task_name=data2.current_task)
     new_task.save_to_db()
@@ -153,8 +151,6 @@ def draw_images():
     if request.method == 'POST':     
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        print("LALSALDALSDLALSDLALS")
-        print(data2.current_user)
         create_task.create_task_results(f.filename,data2.current_task)
         data2.get_pizza_types = create_task.get_pizza_type(f.filename)
         return jsonify({'message' : 'File Uploaded successfully!', 'status':200, 'pizza_types':data2.get_pizza_types})
@@ -205,4 +201,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

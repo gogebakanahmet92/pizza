@@ -18,5 +18,7 @@ EXPOSE 8000
 
 WORKDIR /app/flask-backend
 
+ENV DB_URI=sqlite:////app/flask-backend/pizza.sqlite
+
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "main:app"]
 
