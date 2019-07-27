@@ -44,6 +44,7 @@ export class Home extends Component {
     this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
     this.getLogOut = this.getLogOut.bind(this);
     this.seeResult= this.seeResult.bind(this);
+    this.showImage= this.showImage.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +76,11 @@ export class Home extends Component {
     this.setState({ displayMenu: false }, () => {
       document.removeEventListener('click', this.hideDropdownMenu);
     });
+
+  }
+
+  showImage() {
+
 
   }
 
@@ -293,10 +299,8 @@ export class Home extends Component {
                      <div className="ImageField"></div>
                      <div className="PizzaSelectionField">
                      {task_path[this.state.indexValue].split(",").map((column, index) => 
-                                <button className="Results">{column.trim()}</button>)}
-                                
+                                <button onClick={this.showImage} className="Results">{column.trim()}</button>)}
                      </div>
-                     
                    </div>
                    
                    

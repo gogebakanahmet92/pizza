@@ -91,17 +91,6 @@ def log_in():
 
     return ''
 
-
-
-@app.route('/api/files' , methods=['POST'])
-def get_files():
-    if request.method == 'POST':     
-        f = request.files['file']
-        f.save(secure_filename(f.filename))
-            #create_task.create_task_results(f.filename)
-        data2.get_pizza_types = create_task.get_pizza_type(f.filename)
-        print(type(data2.get_pizza_types))
-        return jsonify({'message' : 'File Uploaded successfully!', 'status':200, 'pizza_types':data2.get_pizza_types})
         
 
 @app.route('/api/taskInfo' , methods=['POST'])
@@ -149,7 +138,14 @@ def add_new_task():
     return jsonify({'message' : 'File!', 'task':data2.task_dict})
 
 
-
+@app.route('/api/files' , methods=['POST'])
+def draw_images(): 
+    if request.method == 'POST':     
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        create_task.create_task_results(f.filename)
+        data2.get_pizza_types = create_task.get_pizza_type(f.filename)
+        return jsonify({'message' : 'File Uploaded successfully!', 'status':200, 'pizza_types':data2.get_pizza_types})
 
 
 
