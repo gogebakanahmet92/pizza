@@ -4,6 +4,8 @@ import LogInForm from './LogInForm';
 import NewTask from './NewTask';
 import { BrowserRouter as Route} from 'react-router-dom';
 
+
+
 export class Home extends Component {
 
 
@@ -30,7 +32,10 @@ export class Home extends Component {
       indexValue:'',
       user:'',
       task_names:[],
-      task_path:[]
+      task_path:[],
+      current_task_name:'',
+      images:[],
+      current_image:''
       
     };
     this.handleChange = this.handleChange.bind(this);
@@ -79,9 +84,10 @@ export class Home extends Component {
 
   }
 
-  showImage() {
-
-
+  showImage(e) {
+    this.setState({
+      current_image:e.target.firstChild.nodeValue
+    })
   }
 
 
@@ -120,19 +126,19 @@ export class Home extends Component {
       this.props.history.push(path); }
 
     seeResult(e){
+      let indexValue = e.target.parentNode.parentNode.querySelectorAll("[data-index]")[0].getAttribute("data-index")
       this.setState(
         {
           image_container:true,
           newTask:false,
           home:false,
           validFile:false,
-          indexValue:e.target.parentNode.parentNode.querySelectorAll("[data-index]")[0].getAttribute("data-index")
+          indexValue:indexValue,
+          current_task_name:this.state.task_names[indexValue],
+          images : this.state.task_path[indexValue].split(', ')
         }
         
         )
-
-        
-        
     }
 
     getAccountSetting(e){
@@ -243,6 +249,9 @@ export class Home extends Component {
       
         var task_names = this.state.task_names
         var task_path = this.state.task_path
+        var current_image_name = this.state.current_task_name + this.state.current_image + '.png'
+        console.log(this.state.current_task_name)
+        console.log(current_image_name)
         return (
             <div className="App">
                 <div className="NavBarField">
@@ -296,7 +305,9 @@ export class Home extends Component {
 
                 {this.state.image_container === true ? 
                    <div className="ImageContainerField">
-                     <div className="ImageField"></div>
+                     <div className="ImageField">
+                        <img src={"/images/" + current_image_name} /> )}
+                     </div>
                      <div className="PizzaSelectionField">
                      {task_path[this.state.indexValue].split(",").map((column, index) => 
                                 <button onClick={this.showImage} className="Results">{column.trim()}</button>)}
@@ -310,6 +321,8 @@ export class Home extends Component {
              
                    : ''}
 
+
+                
 
                 </div>
         )

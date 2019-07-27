@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session , send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import json
 import bcrypt
@@ -15,6 +15,8 @@ db = SQLAlchemy(app)
 class DataStore():
     get_pizza_types = []
     task_dict = {}
+    current_user = ''
+    current_task = ''
 
 data2 = DataStore()
 
@@ -98,14 +100,14 @@ def get_all_tasks():
     data = request.data
     dataDict = json.loads(data)
 
-    current_user = dataDict['current_user']
-    current_user_id = User.query.filter_by(name=current_user).first().id
+    data2.current_user = dataDict['current_user']
+    data2.current_user_id = User.query.filter_by(name=data2.current_user).first().id
 
     data2.task_dict = {
        'task_path': [],
        'task_name' : []
     }
-    task = Tasks.query.filter(Tasks.user_id == current_user_id).all()
+    task = Tasks.query.filter(Tasks.user_id == data2.current_user_id).all()
     for i in task:
         data2.task_dict['task_path'].append(i.task_path)
         data2.task_dict['task_name'].append(i.task_name)
@@ -115,14 +117,23 @@ def get_all_tasks():
 
 
 
+
+@app.route('/images/<path:path>')
+def send_image(path):
+    return send_from_directory('images', path)
+
+
+
+
+
 @app.route('/api/addNewTask' , methods=['POST'])
 def add_new_task(): 
     data = request.data
     dataDict = json.loads(data)
     prediction_step = dataDict['sending_prediction_step']
-    task_name =  dataDict['sending_task_name']
-    current_user = dataDict['current_user']
-    current_user_id = User.query.filter_by(name=current_user).first().id
+    data2.current_task =  dataDict['sending_task_name']
+    data2.current_user = dataDict['current_user']
+    data2.current_user_id = User.query.filter_by(name=data2.current_user).first().id
 
 
     print(data2.get_pizza_types)
@@ -132,8 +143,7 @@ def add_new_task():
             
     print(pizza_string)
 
-
-    new_task = Tasks(task_path=pizza_string, user_id=current_user_id, task_name=task_name)
+    new_task = Tasks(task_path=pizza_string, user_id=data2.current_user_id, task_name=data2.current_task)
     new_task.save_to_db()
     return jsonify({'message' : 'File!', 'task':data2.task_dict})
 
@@ -143,7 +153,9 @@ def draw_images():
     if request.method == 'POST':     
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        create_task.create_task_results(f.filename)
+        print("LALSALDALSDLALSDLALS")
+        print(data2.current_user)
+        create_task.create_task_results(f.filename,data2.current_task)
         data2.get_pizza_types = create_task.get_pizza_type(f.filename)
         return jsonify({'message' : 'File Uploaded successfully!', 'status':200, 'pizza_types':data2.get_pizza_types})
 

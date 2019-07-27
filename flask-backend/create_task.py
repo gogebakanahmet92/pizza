@@ -6,6 +6,9 @@ import shutil
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn import linear_model
+from shutil import copyfile
+
+
 
 import matplotlib.pyplot as plt
 import datetime
@@ -29,7 +32,11 @@ def get_pizza_type(file_name):
             pizza_type.append(pizza_vector[category])
     return pizza_type
 
-def create_task_results(file_name):
+def create_task_results(file_name,user):
+
+    current_user = user
+    print('CURRENT USER')
+    print(current_user)
     data = pd.ExcelFile(file_name)
     sheet_name = data.sheet_names
     df = data.parse(sheet_name[0])
@@ -67,7 +74,6 @@ def create_task_results(file_name):
         Y = sales_data_dict[pizza_vector[i]][1]
 
         
-        print(Y)
 
 
 
@@ -83,19 +89,31 @@ def create_task_results(file_name):
         plt.plot(X, pol_reg.predict(poly_reg.fit_transform(X)), color='blue')
         plt.title('Truth or Bluff (Linear Regression)')
         plt.xlabel('Position level')
-        plt.ylabel('Salary')
+        plt.ylabel('Salary') 
+
+        current_user_file_name = '/images/' + current_user + '.png'
+
+        saving_file_name = current_user + pizza_type[i] + '.png'
 
 
-        saving_file_name = file_name + pizza_type[i] + '.png'
-        current_file = os.path.dirname(os.path.abspath(__file__)) + '/' + saving_file_name
+        current_file = os.path.dirname(os.path.abspath(__file__)) + '/images/' + saving_file_name
         parent_directory = os.path.normpath(os.path.dirname(os.path.abspath(__file__)) + os.sep + os.pardir)
 
-        plt.savefig(saving_file_name)
-        destination = parent_directory + '/react-frontend/public/images/' + saving_file_name
+        print(current_file)
+        plt.savefig(current_file)
+        
+        if i == 0:
+            copyfile(current_file, 'images/' + current_user + '.png')
 
-        print('Variance score: %.2f' % r2_score(Y, pol_reg.predict(poly_reg.fit_transform(X))))
 
-        print("Mean squared error: %.2f"
-            % mean_squared_error(Y, pol_reg.predict(poly_reg.fit_transform(X))))
+        destination = parent_directory + '/react-frontend/src/pages/' + saving_file_name
 
-        os.rename(saving_file_name,destination)
+        #print('Variance score: %.2f' % r2_score(Y, pol_reg.predict(poly_reg.fit_transform(X))))
+
+        #print("Mean squared error: %.2f"
+            #% mean_squared_error(Y, pol_reg.predict(poly_reg.fit_transform(X))))
+
+        #os.rename(saving_file_name,destination)
+        #os.rename(current_user_file_name, destination)
+
+    
